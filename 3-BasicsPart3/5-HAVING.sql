@@ -13,7 +13,6 @@ SELECT  [Department].[GroupName]
         , AVG ([Department].[DepartmentID]) AS [AvgDeptId]
         , SUM ([Department].[DepartmentID]) AS [SumOfDeptIds]
         , COUNT (*) AS [CountDepartments]
-        , STRING_AGG ([Department].[Name], ',') AS [DepartmentNames]
   FROM  [HumanResources].[Department]
  GROUP BY [Department].[GroupName]
 --WHERE COUNT (*) < 3;

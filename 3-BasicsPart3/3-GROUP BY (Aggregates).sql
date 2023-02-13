@@ -16,8 +16,6 @@ SELECT  MAX(DepartmentID)
 		, AVG(DepartmentID)
 		, SUM(DepartmentID)
 		, COUNT(*)
-		, STRING_AGG([Name], ',')
-		, STRING_AGG([GroupName], ',')
   FROM  HumanResources.Department;
 
 SELECT  [GroupName]
@@ -26,7 +24,6 @@ SELECT  [GroupName]
 		, AVG(DepartmentID)
 		, SUM(DepartmentID)
 		, COUNT(*)
-		, STRING_AGG([Name], ',')
   FROM  HumanResources.Department
   GROUP BY [GroupName];
 GO

@@ -1,0 +1,15 @@
+USE AdventureWorks2019;
+GO
+
+SELECT  GETDATE ()
+        , DATEADD (DAY, 7, GETDATE ())
+        , DATEADD (DAY, -7, GETDATE ())
+        , DATEADD (WEEK, 1, GETDATE ())
+        , DATEADD (MONTH, 1, GETDATE ())
+        , DATEADD (YEAR, 1, GETDATE ())
+        , DATEADD (HOUR, 1, GETDATE ())
+        , DATEADD (MINUTE, 1, GETDATE ())
+        , DATEADD (SECOND, 1, GETDATE ())
+        , DATEADD (MILLISECOND, 2, GETDATE ())
+        , DATEADD (MICROSECOND, 1, CAST (GETDATE () AS DATETIME2));
+GO

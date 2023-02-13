@@ -13,7 +13,6 @@ SELECT  [GroupName]
         , AVG ([DepartmentID])
         , SUM ([DepartmentID])
         , COUNT (*)
-        , STRING_AGG ([Name], ',')
   FROM  [HumanResources].[Department]
  GROUP BY [GroupName];
 
@@ -23,7 +22,6 @@ SELECT  [GroupName]
         , AVG ([DepartmentID]) AS [AvgDeptId]
         , SUM ([DepartmentID]) AS [SumOfDeptIds]
         , COUNT (*) AS [CountDepartments]
-        , STRING_AGG ([Name], ',') AS [DepartmentNames]
   FROM  [HumanResources].[Department]
  GROUP BY [GroupName];
 
