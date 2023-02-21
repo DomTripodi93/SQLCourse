@@ -22,5 +22,21 @@ SELECT  Person.BusinessEntityID
         , LEAD (Person.FirstName) OVER (PARTITION BY Person.PersonType
                                             ORDER BY Person.FirstName
                                        ) AS PersonLead
-  FROM  Person.Person;
+        , FIRST_VALUE (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                                   ORDER BY Person.FirstName
+                                              ) AS FirstPerson
+        , LAST_VALUE (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                                  ORDER BY Person.FirstName
+                                             ) AS LastPerson
+        , LAST_VALUE (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                                  ORDER BY Person.FirstName
+                                                   ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+                                             ) AS LastPerson
+        , FIRST_VALUE (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                                   ORDER BY Person.FirstName DESC
+                                              ) AS LastPersonSimpler
+  FROM  Person.Person
+ ORDER BY
+    Person.PersonType
+    , Person.FirstName;
 GO

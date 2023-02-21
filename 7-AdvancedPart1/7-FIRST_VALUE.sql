@@ -19,5 +19,11 @@ SELECT  Person.BusinessEntityID
         , LAG (Person.FirstName) OVER (PARTITION BY Person.PersonType
                                            ORDER BY Person.FirstName
                                       ) AS PersonLag
+        , LEAD (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                            ORDER BY Person.FirstName
+                                       ) AS PersonLead
+        , FIRST_VALUE (Person.FirstName) OVER (PARTITION BY Person.PersonType
+                                                   ORDER BY Person.FirstName
+                                              ) AS FirstPerson
   FROM  Person.Person;
 GO
