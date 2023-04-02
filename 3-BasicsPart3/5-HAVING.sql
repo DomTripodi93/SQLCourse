@@ -1,21 +1,16 @@
-USE [AdventureWorks2019];
+USE AdventureWorks2019
 GO
 
---SELECT  [DepartmentID]
---        , [Name]
---        , [GroupName]
---        , [ModifiedDate]
---  FROM  HumanResources.Department
-
-SELECT  [Department].[GroupName]
-        , MAX ([Department].[DepartmentID]) AS [MaxDeptId]
-        , MIN ([Department].[DepartmentID]) AS [MinDeptId]
-        , AVG ([Department].[DepartmentID]) AS [AvgDeptId]
-        , SUM ([Department].[DepartmentID]) AS [SumOfDeptIds]
-        , COUNT (*) AS [CountDepartments]
-  FROM  [HumanResources].[Department]
- GROUP BY [Department].[GroupName]
---WHERE COUNT (*) < 3;
---WHERE [CountDepartments] < 3;
-HAVING  COUNT (*) < 3;
-GO
+SELECT 
+    GroupName AS NameOfGroup,
+    MIN(DepartmentId) AS MinimumDepartmentId,
+    MAX(DepartmentId) MaximumDepartmentId,
+    COUNT(*),
+    SUM(DepartmentID),
+    AVG(CAST(DepartmentID AS DECIMAL(18,4)))
+FROM HumanResources.Department AS Dept
+    -- WHERE GroupName = 'Inventory Management'
+    -- WHERE SUM(DepartmentID) > 15
+    GROUP BY GroupName
+    HAVING SUM(DepartmentID) > 15
+    ORDER BY COUNT(*) DESC 

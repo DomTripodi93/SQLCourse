@@ -1,39 +1,29 @@
-USE [AdventureWorks2019];
+USE AdventureWorks2019
 GO
 
---SELECT  [DepartmentID]
---        , [Name]
---        , [GroupName]
---        , [ModifiedDate]
---  FROM  HumanResources.Department
+SELECT [DepartmentID],
+    [Name],
+    [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department
 
-SELECT  [GroupName]
-        , MAX ([DepartmentID])
-        , MIN ([DepartmentID])
-        , AVG ([DepartmentID])
-        , SUM ([DepartmentID])
-        , COUNT (*)
-  FROM  [HumanResources].[Department]
- GROUP BY [GroupName];
+SELECT COUNT(DISTINCT GroupName)
+FROM HumanResources.Department
 
-SELECT  [GroupName]
-        , MAX ([DepartmentID]) AS [MaxDeptId]
-        , MIN ([DepartmentID]) AS [MinDeptId]
-        , AVG ([DepartmentID]) AS [AvgDeptId]
-        , SUM ([DepartmentID]) AS [SumOfDeptIds]
-        , COUNT (*) AS [CountDepartments]
-  FROM  [HumanResources].[Department]
- GROUP BY [GroupName];
+SELECT 
+    GroupName AS NameOfGroup,
+    MIN(DepartmentId) AS MinimumDepartmentId,
+    MAX(DepartmentId) MaximumDepartmentId,
+    COUNT(*),
+    SUM(DepartmentID),
+    AVG(CAST(DepartmentID AS DECIMAL(18,4)))
+-- FROM HumanResources.Department Dept
+FROM HumanResources.Department AS Dept
+    GROUP BY GroupName
+    ORDER BY COUNT(*) DESC 
 
-SELECT  [DeptInfo].[DepartmentID]
-        , [DeptInfo].[Name]
-        , [DeptInfo].[GroupName]
-        , [DeptInfo].[ModifiedDate]
-  FROM  [HumanResources].[Department] AS [DeptInfo];
-
-SELECT  [Department].[DepartmentID]
-        , [Department].[Name]
-        , [Department].[GroupName]
-        , [Department].[ModifiedDate]
-  FROM  [HumanResources].[Department] AS [Department];
-GO
+SELECT [Department].[DepartmentID],
+    [Department].[Name],
+    [Department].[GroupName],
+    [Department].[ModifiedDate]  
+FROM HumanResources.Department AS Department

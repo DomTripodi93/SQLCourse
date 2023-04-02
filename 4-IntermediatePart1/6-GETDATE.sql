@@ -1,5 +1,5 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
-SELECT  GETDATE ();
-GO
+SELECT GETDATE()
+

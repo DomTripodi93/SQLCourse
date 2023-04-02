@@ -1,25 +1,17 @@
-USE [AdventureWorks2019];
+USE AdventureWorks2019
 GO
 
---DECLARE @MatchOn VARCHAR(255) = 'C45E8AB8-01BE-4B76-B215-820C8368181A' --rowguid
-DECLARE @MatchOn VARCHAR(255) = '7'; --BusinessEntityId
+DECLARE @SearchValue NVARCHAR(255)
 
-SELECT  [Person].[BusinessEntityID]
-        , [Person].[PersonType]
-        , [Person].[NameStyle]
-        , ISNULL ([Person].[Title], '') AS Title
-        , ISNULL (NULLIF ([Person].[Title], 'Mr.'), '') AS Title
-        , NULLIF ([Person].[Title], 'Mr.') AS Title
-        , [Person].[FirstName]
-        , ISNULL ([Person].[MiddleName], 'No Middle Name') AS MiddleName
-        , [Person].[LastName]
-        --, ISNULL ([Person].[Suffix], [Person].[Title]) AS [Suffix]
-        , COALESCE ([Person].[Suffix], [Person].[Title], '') AS [Suffix]
-        , [Person].[EmailPromotion]
-        , [Person].[rowguid]
-  FROM  [Person].[Person]
- --WHERE [BusinessEntityID] = @MatchOn
- WHERE  CAST ([Person].[BusinessEntityID] AS VARCHAR(255)) = @MatchOn
-        --OR [rowguid] = @MatchOn
-        OR  CAST ([Person].[rowguid] AS VARCHAR(255)) = @MatchOn;
-GO
+SET @SearchValue = '3'
+-- SET @SearchValue = '92c4279f-1207-48a3-8448-4636514eb7e2'
+
+SELECT[Person].[PersonType],
+    [Person].[FirstName],
+    [Person].[LastName],
+     Person.BusinessEntityID,
+     Person.rowguid
+FROM Person.Person AS Person
+    WHERE CAST(Person.BusinessEntityID AS NVARCHAR(255)) = @SearchValue
+        OR CAST(Person.rowguid AS NVARCHAR(255)) = @SearchValue
+    -- WHERE BusinessEntityID  = @SearchValue

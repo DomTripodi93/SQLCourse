@@ -2,11 +2,9 @@ USE AdventureWorks2019
 GO
 
 SELECT[Person].[PersonType],
-    NULLIF(Person.MiddleName, 'A'),
-    ISNULL(NULLIF(Person.MiddleName, 'A'), [Person].[Title]),
     [Person].[MiddleName],
     ISNULL([Person].[MiddleName], 'No Middle Name'),
-    COALESCE([Person].[MiddleName], [Person].[Title], '', ''), 
+    COALESCE([Person].[MiddleName], [Person].[Title], ''), 
     [Person].[Title],
     [Person].[BusinessEntityID],
     [Person].[NameStyle],

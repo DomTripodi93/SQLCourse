@@ -1,16 +1,24 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
---SELECT  [DepartmentID]
---        , [Name]
---        , [GroupName]
---        , [ModifiedDate]
---  FROM  HumanResources.Department
+SELECT [DepartmentID],
+    [Name],
+    [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department
 
-SELECT  [GroupName]
-  FROM  HumanResources.Department;
+SELECT [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department
 
-SELECT  DISTINCT
-        [GroupName]
-  FROM  HumanResources.Department;
-GO
+SELECT DISTINCT [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department
+
+SELECT DISTINCT [ModifiedDate] 
+FROM HumanResources.Department
+
+SELECT DISTINCT [Name], 
+    [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department

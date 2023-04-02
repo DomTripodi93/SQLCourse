@@ -1,53 +1,33 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
-SELECT  [EmployeeDepartmentHistory].[StartDate]
-        , [EmployeeDepartmentHistory].[EndDate]
-        , [Person].[Title]
-        , [Person].[FirstName]
-        , [Person].[MiddleName]
-        , [Person].[LastName]
-        , [Person].[Suffix]
-  --FROM  [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-  --    --INNER JOIN [Person].[Person] AS [Person]
-  --    --LEFT JOIN [Person].[Person] AS [Person]
-  --    --LEFT OUTER JOIN [Person].[Person] AS [Person]
-  --    RIGHT JOIN [Person].[Person] AS [Person]
-  --        ON [Person].[BusinessEntityID] = [EmployeeDepartmentHistory].[BusinessEntityID];
-  FROM  [Person].[Person] AS [Person]
-      --INNER JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      --JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      --LEFT JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      --RIGHT JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      --RIGHT OUTER JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      FULL OUTER JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-          ON [Person].[BusinessEntityID] = [EmployeeDepartmentHistory].[BusinessEntityID];
+SELECT [EmployeeDepartmentHistory].[BusinessEntityID],
+    [EmployeeDepartmentHistory].[DepartmentID],
+    [EmployeeDepartmentHistory].[ShiftID],
+    [EmployeeDepartmentHistory].[StartDate],
+    [EmployeeDepartmentHistory].[EndDate],
+    [Person].[FirstName],
+    [Person].[MiddleName],
+    [Person].[LastName]
+-- FROM HumanResources.EmployeeDepartmentHistory AS EmployeeDepartmentHistory
+--     FULL OUTER JOIN Person.Person AS Person
+--         ON Person.BusinessEntityID = EmployeeDepartmentHistory.BusinessEntityID
+FROM Person.Person AS Person
+    FULL JOIN HumanResources.EmployeeDepartmentHistory AS EmployeeDepartmentHistory
+        -- ON Person.BusinessEntityID = EmployeeDepartmentHistory.BusinessEntityID
+        ON 1 = 0
 
-DROP TABLE IF EXISTS dbo.TestMissingDepartment;
 
-SELECT  [Department].[DepartmentID]
-        , [Department].[Name]
-        , [Department].[GroupName]
-        , [Department].[ModifiedDate]
-  INTO  dbo.TestMissingDepartment
-  FROM  [HumanResources].[Department];
 
-INSERT INTO dbo.TestMissingDepartment ([Name]
-                                       , [GroupName]
-                                       , [ModifiedDate])
-VALUES ('Missing Department', 'Missing Group', GETDATE ());
 
-DELETE  FROM [dbo].[TestMissingDepartment]
- WHERE  [TestMissingDepartment].[DepartmentID] = 1;
+--HumanResources.EmployeeDepartmentHistory INNER JOIN / JOIN Person.Person -- Only Records that exist in both tables
+    --Doesn't matter which table is on the left or right
 
-SELECT  *
-  FROM  [dbo].[TestMissingDepartment]
-      --FULL OUTER JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-      FULL JOIN [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-          ON [TestMissingDepartment].[DepartmentID] = [EmployeeDepartmentHistory].[DepartmentID];
-
---[HumanResources].[EmployeeDepartmentHistory] JOIN / INNER JOIN [Person].[Person] --All Records that match in both tables
---[HumanResources].[EmployeeDepartmentHistory] LEFT JOIN / LEFT OUTER JOIN [Person].[Person] --All Records from the left table, and any matches from the right table
---[HumanResources].[EmployeeDepartmentHistory] RIGHT JOIN / LEFT OUTER JOIN [Person].[Person] --All Records from the right table, and any matches from the left table
---[HumanResources].[EmployeeDepartmentHistory] FULL JOIN / FULL OUTER JOIN [Person].[Person] --All Records that exist in EITHER tables
-GO
+--Person.Person LEFT JOIN / LEFT OUTER JOIN HumanResources.EmployeeDepartmentHistory -- Include all records from the Left table, but only matching records from the Right table
+    --If we don't have a match then we get NULL values for the fields from our Right table
+    
+--Person.Person RIGHT JOIN / RIGHT OUTER JOIN HumanResources.EmployeeDepartmentHistory -- Include all records from the Right table, but only matching records from the Left table
+    --If we don't have a match then we get NULL values for the fields from our Left table
+    
+--Person.Person FULL JOIN / FULL OUTER JOIN HumanResources.EmployeeDepartmentHistory -- Include all records from the Both tables, whether we have a match or not
+    --We don't even need a match to include records from both tables

@@ -1,29 +1,23 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
---SELECT  [DepartmentID]
---        , [Name]
---        , [GroupName]
---        , [ModifiedDate]
---  FROM  HumanResources.Department
+SELECT [DepartmentID],
+    [Name],
+    [GroupName],
+    [ModifiedDate] 
+FROM HumanResources.Department
 
-SELECT  [DepartmentID]
-        , [GroupName]
-  FROM  HumanResources.Department;
+SELECT COUNT(DISTINCT GroupName)
+FROM HumanResources.Department
 
-SELECT  MAX(DepartmentID)
-		, MIN(DepartmentID)
-		, AVG(DepartmentID)
-		, SUM(DepartmentID)
-		, COUNT(*)
-  FROM  HumanResources.Department;
+SELECT 
+    GroupName,
+    MIN(DepartmentId),
+    MAX(DepartmentId),
+    COUNT(*),
+    SUM(DepartmentID),
+    AVG(CAST(DepartmentID AS DECIMAL(18,4)))
+FROM HumanResources.Department
+    GROUP BY GroupName
+    ORDER BY COUNT(*) DESC 
 
-SELECT  [GroupName]
-		, MAX(DepartmentID)
-		, MIN(DepartmentID)
-		, AVG(DepartmentID)
-		, SUM(DepartmentID)
-		, COUNT(*)
-  FROM  HumanResources.Department
-  GROUP BY [GroupName];
-GO

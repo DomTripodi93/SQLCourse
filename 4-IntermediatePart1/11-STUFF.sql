@@ -1,25 +1,28 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
-SELECT  Department.DepartmentID
-        , Department.[Name]
-        , Department.GroupName
-        , Department.ModifiedDate
-  FROM  HumanResources.Department;
+SELECT 
+    [Department].[GroupName]
+    , STRING_AGG([Name], ', ') AS DepartmentsInGroup
+    , STRING_AGG([Name], ';') AS DepartmentsInGroupForProgram
+FROM HumanResources.Department AS Department
+GROUP BY [Department].[GroupName]
 
-SELECT  STUFF ((
-                   SELECT   DISTINCT
-                            ', ' + InnerDept.[Name]
-                     FROM   HumanResources.Department AS InnerDept
-                    WHERE   InnerDept.GroupName = Department.GroupName
-                   FOR XML PATH ('')
-               )
-               , 1
-               , 1
-               , ''
-              ) AS DepartmentsInGroupStuffed
-        , STRING_AGG (Department.[Name], ', ') AS DepartmentsInGroup
-        , Department.GroupName
-  FROM  HumanResources.Department
- GROUP BY Department.GroupName;
-GO
+
+SELECT DISTINCT 
+    [Department].[GroupName]
+    , STUFF((
+        SELECT ', ' +
+        [DepartmentInner].[Name] 
+        --  , Department.GroupName
+        FROM HumanResources.Department AS DepartmentInner
+            WHERE DepartmentInner.GroupName = Department.GroupName
+            -- FOR XML PATH('Main')
+            FOR XML PATH('')),
+            1,
+            2,
+            '')
+FROM HumanResources.Department AS Department
+-- GROUP BY [Department].[GroupName]
+
+    -- <name> value </name>

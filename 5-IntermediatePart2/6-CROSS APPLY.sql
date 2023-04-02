@@ -1,29 +1,37 @@
-USE AdventureWorks2019;
+USE AdventureWorks2019
 GO
 
-SELECT  *
-  FROM  [HumanResources].[Department]
-      --OUTER APPLY (
-      CROSS APPLY (
-                      SELECT    STRING_AGG ([Person].[FirstName] + ' ' + [Person].[MiddleName] + ' ' + [Person].[LastName], '; ') AS PeopleInDepartment
-                        FROM    [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-                            JOIN [Person].[Person]
-                                ON [Person].[BusinessEntityID] = [EmployeeDepartmentHistory].[BusinessEntityID]
-                       WHERE [EmployeeDepartmentHistory].[DepartmentID] = [Department].[DepartmentID]
-                             AND [Person].[FirstName] LIKE '%d%'
-                       GROUP BY [EmployeeDepartmentHistory].[DepartmentID]
-                  ) AS EmployeesInDepartment
-      OUTER APPLY (
-                      SELECT    TOP 1
-                                [Person].[FirstName] + ' ' + [Person].[MiddleName] + ' ' + [Person].[LastName] AS FirstPersonInDepartment
-                                , [EmployeeDepartmentHistory].[StartDate] AS FirstPersonStartDate
-                        FROM    [HumanResources].[EmployeeDepartmentHistory] AS [EmployeeDepartmentHistory]
-                            JOIN [Person].[Person]
-                                ON [Person].[BusinessEntityID] = [EmployeeDepartmentHistory].[BusinessEntityID]
-                       WHERE [EmployeeDepartmentHistory].[DepartmentID] = [Department].[DepartmentID]
-                       ORDER BY [EmployeeDepartmentHistory].[StartDate]
-                  ) AS FirstEmployeeInDepartment;
+SELECT EmployeesInDepartment.EmployeeCount, 
+    FirstEmployeeInDepartment.FullName,
+    LastEmployeeInDepartment.FullName,
+    * 
+FROM HumanResources.Department AS RootDepartment
+    -- OUTER APPLY (SELECT * FROM HumanResources.Department AS NestedDepartment
+    --     WHERE NestedDepartment.DepartmentID = RootDepartment.DepartmentID) AS InnerDepartment
+    -- OUTER APPLY (-- LEFT JOIN
+    CROSS APPLY (-- INNER JOIN
+        SELECT TOP 1
+            Person.FirstName + ' ' + ISNULL(Person.MiddleName, '') + ' ' + Person.LastName AS FullName
+            FROM HumanResources.EmployeeDepartmentHistory AS FirstEmployee 
+                JOIN Person.Person 
+                    ON Person.BusinessEntityID = FirstEmployee.BusinessEntityID
+                WHERE FirstEmployee.DepartmentID = RootDepartment.DepartmentID
+                    -- AND RootDepartment.DepartmentID = 2
+            ORDER BY FirstEmployee.StartDate 
+    ) AS FirstEmployeeInDepartment
+    OUTER APPLY (
+        SELECT TOP 1
+            Person.FirstName + ' ' + ISNULL(Person.MiddleName, '') + ' ' + Person.LastName AS FullName
+            FROM HumanResources.EmployeeDepartmentHistory AS LastEmployee 
+                JOIN Person.Person 
+                    ON Person.BusinessEntityID = LastEmployee.BusinessEntityID
+                WHERE LastEmployee.DepartmentID = RootDepartment.DepartmentID
+            ORDER BY LastEmployee.StartDate DESC
+    ) AS LastEmployeeInDepartment
+    OUTER APPLY (
+        SELECT COUNT(*) AS EmployeeCount
+            FROM HumanResources.EmployeeDepartmentHistory AS EmployeeCount
+                WHERE EmployeeCount.DepartmentID = RootDepartment.DepartmentID
+    ) AS EmployeesInDepartment
 
---[HumanResources].[Department] OUTER APPLY [HumanResources].[EmployeeDepartmentHistory] --All Records from the left table, and any matches from the right table
---[HumanResources].[Department] CROSS APPLY [HumanResources].[EmployeeDepartmentHistory] --All Records that match in both tables (or result sets)
-GO
+
