@@ -51,8 +51,8 @@ BEGIN
     --             ON MostRecentPayRate.BusinessEntityID = Person.BusinessEntityID
     --         WHERE IsMostRecent = 1
 
-	IF OBJECT_ID('tempdb..#documents') IS NOT NULL
-		DROP TABLE #documents
+	IF OBJECT_ID('tempdb..#MostRecentPayRate') IS NOT NULL
+		DROP TABLE #MostRecentPayRate
 
     SELECT MostRecentPayRate.Rate, 
         MostRecentPayRate.BusinessEntityID 
