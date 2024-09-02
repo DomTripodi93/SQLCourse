@@ -1,0 +1,19 @@
+Hello!
+
+Now that you have learned about WHERE clauses, it's time for some practice
+
+
+Use WHERE to select all married employees from the HumanResources.Employee table.
+
+If you need a hint, married employees have an "M" as their marital status.
+
+
+Next, look in the HumanResources.EmployeeDepartmentHistory table for each Employee's current Department.
+
+The Department is current if the EndDate field is NULL.
+
+Remember you can't use equal(=) or not equal(<>) comparison operators to check if a field is null.
+
+
+Good Luck!
+Dominic

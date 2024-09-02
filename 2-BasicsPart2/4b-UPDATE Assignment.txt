@@ -1,0 +1,12 @@
+Hello!
+
+In the last lecture we talked about the UPDATE statement.
+
+
+We changed the Name field in the HumanResources.Department table for the "Research and Development" department to "R and D".
+
+Your assignment is to also update the "GroupName" field in the HumanResources.Department table from "Research and Development" to "R and D".
+
+
+Good Luck!
+Dominic

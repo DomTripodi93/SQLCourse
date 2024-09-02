@@ -1,0 +1,18 @@
+Hello!
+
+TOP is a great tool for quickly finding out what kind of information is in a table.
+
+Now that you have learned how to use the TOP keyword, lets explore the other tables on the Human Resources Schema using TOP.
+
+
+Use TOP to take a look at the top 10 records from the following tables:
+
+Shift
+Employee
+EmployeeDepartmentHistory
+EmployeePayHistory
+JobCandidate
+
+
+Good Luck!
+Dominic
