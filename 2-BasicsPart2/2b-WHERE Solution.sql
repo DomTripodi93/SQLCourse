@@ -6,5 +6,5 @@ SELECT  *
 
 SELECT  *
   FROM  HumanResources.EmployeeDepartmentHistory
- -- WHERE EndDate <> NULL /*This wouldn't work because comparisons to NULL don't return results*/
- WHERE  EndDate IS NOT NULL;
+ -- WHERE EndDate = NULL /*This wouldn't work because comparisons to NULL don't return results*/
+ WHERE  EndDate IS NULL;
